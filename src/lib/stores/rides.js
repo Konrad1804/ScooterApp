@@ -1,21 +1,19 @@
-// Zeilen 1–132
+// nur Zeitbasistarif
 import { writable, derived } from 'svelte/store';
-import { selectedScooter, isAvailable, setStatus } from './scooters';
+import { isAvailable, setStatus } from './scooters';
 
 const TARIFF = {
   unlockFeeCents: 100,   // 1,00 €
-  perMinuteCents: 25,    // 0,25 €/Min
-  perKmCents: 20         // 0,20 €/km
+  perMinuteCents: 25     // 0,25 €/Min
 };
 
-function priceCents(durationMinutes, distanceKm) {
+function priceCents(durationMinutes) {
   const g = TARIFF.unlockFeeCents;
   const t = Math.max(0, Math.ceil(durationMinutes)) * TARIFF.perMinuteCents;
-  const s = Math.max(0, distanceKm) * TARIFF.perKmCents;
-  return Math.round(g + t + s);
+  return Math.round(g + t);
 }
 
-export const activeRide = writable(null); // {id,scooterId,startedAt,stoppedAt,distanceKm}
+export const activeRide = writable(null); // {id,scooterId,startedAt,stoppedAt}
 
 let tickHandle = null;
 export const now = writable(Date.now());
@@ -40,11 +38,8 @@ export const durationMinutes = derived(
 );
 
 export const livePriceCents = derived(
-  [activeRide, durationMinutes],
-  ([$ride, minutes]) => {
-    if (!$ride) return 0;
-    return priceCents(minutes, $ride.distanceKm);
-  }
+  [durationMinutes],
+  ([minutes]) => priceCents(minutes)
 );
 
 export function startRide(scooter) {
@@ -53,8 +48,7 @@ export function startRide(scooter) {
     id: `R-${Math.random().toString(36).slice(2, 10).toUpperCase()}`,
     scooterId: scooter.id,
     startedAt: Date.now(),
-    stoppedAt: null,
-    distanceKm: 0
+    stoppedAt: null
   };
   setStatus(scooter.id, 'in_use');
   activeRide.set(ride);
@@ -62,27 +56,33 @@ export function startRide(scooter) {
   return { ok: true, rideId: ride.id };
 }
 
-export function addDistance(deltaKm) {
-  activeRide.update(r => (r ? { ...r, distanceKm: Math.max(0, r.distanceKm + Math.max(0, deltaKm)) } : r));
-}
-
 export function stopRide() {
   let summary = null;
+  let scooterId = null;
+
+  // 1) Abschluss berechnen
   activeRide.update(r => {
     if (!r) return r;
     const stoppedAt = Date.now();
     const minutes = Math.max(0, (stoppedAt - r.startedAt) / 60000);
-    const price = priceCents(minutes, r.distanceKm);
+    const price = priceCents(minutes);
+    scooterId = r.scooterId;
     summary = {
       rideId: r.id,
       scooterId: r.scooterId,
       minutes: Math.ceil(minutes),
-      km: Number(r.distanceKm.toFixed(2)),
       priceCents: price
     };
-    setStatus(r.scooterId, 'available');
     return { ...r, stoppedAt };
   });
+
+  // 2) Status freigeben und Ticker stoppen
+  if (scooterId) setStatus(scooterId, 'available');
   stopTicker();
+
+  // 3) Fahrt wirklich beenden -> UI entsperrt Start-Button wieder
+  activeRide.set(null);
+
   return summary;
 }
+
