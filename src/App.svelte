@@ -1,4 +1,3 @@
-<!-- Zeilen 1–48 -->
 <script>
   import Index from './routes/index.svelte';
   import Customer from './routes/customer.svelte';

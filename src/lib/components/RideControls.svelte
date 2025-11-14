@@ -7,7 +7,9 @@
   }
   function stop() {
     const sum = stopRide();
-    if (sum) alert(`Fahrt ${sum.rideId}\nMinuten: ${sum.minutes}\nPreis: ${(sum.priceCents/100).toFixed(2)} €`);
+    if (sum) {
+      alert(`Fahrt ${sum.rideId}\nMinuten: ${sum.minutes}\nPreis: ${(sum.priceCents/100).toFixed(2)} €`);
+  }
   }
 </script>
 

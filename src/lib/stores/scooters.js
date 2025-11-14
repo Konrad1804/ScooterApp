@@ -1,4 +1,3 @@
-// Zeilen 1–78
 import { writable, derived } from 'svelte/store';
 
 function id() {
@@ -6,9 +5,7 @@ function id() {
 }
 
 export const scooters = writable([
-  { id: 'SC-1001', model: 'Urban Lite', batteryPercent: 95, status: 'available' },
-  { id: 'SC-1002', model: 'City Pro',  batteryPercent: 72, status: 'available' },
-  { id: 'SC-1003', model: 'City Pro',  batteryPercent: 18, status: 'maintenance' }
+  
 ]);
 
 export const selectedScooterId = writable(null);

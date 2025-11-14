@@ -1,4 +1,3 @@
-<!-- Zeilen 1–18 -->
 <script>
   import { livePriceCents } from '../stores/rides';
 </script>

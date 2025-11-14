@@ -1,9 +1,8 @@
-<!-- Zeilen 1–70 -->
 <script>
   import { addScooter, scooters, setStatus, updateBattery } from '../stores/scooters';
 
   let id = '';
-  let model = 'City Pro';
+  let model = '';
   let batteryPercent = 100;
 
   function submit() {

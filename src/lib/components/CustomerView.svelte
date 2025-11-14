@@ -1,4 +1,3 @@
-<!-- Zeilen 1–32 -->
 <script>
   import ScooterList from './ScooterList.svelte';
   import RideControls from './RideControls.svelte';

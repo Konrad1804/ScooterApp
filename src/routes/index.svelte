@@ -1,4 +1,3 @@
-<!-- Zeilen 1–20 -->
 <script>
   function goto(hash) { location.hash = hash; }
 </script>
