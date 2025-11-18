@@ -1,5 +1,5 @@
 <script>
-  import { addScooter, scooters, setStatus, updateBattery } from '../stores/scooters';
+  import { addScooter, scooters, setStatus, updateBattery, removeScooter } from '../stores/scooters';
 
   let id = '';
   let model = '';
@@ -18,7 +18,7 @@
   <input placeholder="ID optional" bind:value={id} />
   <input placeholder="Modell" bind:value={model} />
   <input type="number" min="0" max="100" bind:value={batteryPercent} />
-  <button type="submit">Hinzufügen</button>
+  <button type="submit" class="btn btn-success">Hinzufügen</button>
 </form>
 
 <h3>Bestand</h3>
@@ -26,9 +26,12 @@
   {#each $scooters as s}
     <li>
       {s.id} · {s.model} · {s.batteryPercent}% · {s.status}
-      <button on:click={() => setStatus(s.id, 'available')}>available</button>
-      <button on:click={() => setStatus(s.id, 'in_use')}>in_use</button>
-      <button on:click={() => setStatus(s.id, 'maintenance')}>maintenance</button>
+      <button class="btn btn-outline btn-sm" on:click={() => setStatus(s.id, 'available')}>available</button>
+      <button class="btn btn-outline btn-sm" on:click={() => setStatus(s.id, 'in_use')}>in_use</button>
+      <button class="btn btn-outline btn-sm" on:click={() => setStatus(s.id, 'maintenance')}>maintenance</button>
+      <button class="btn btn-danger btn-sm" on:click={() => {
+        if (confirm(`Scooter ${s.id} wirklich entfernen?`)) removeScooter(s.id);
+      }}>Entfernen</button>
       <!-- Zeile 34 ersetzen -->
       <input type="number" min="0" max="100" value={s.batteryPercent}
       on:change={(e)=>updateBattery(s.id, Number(/** @type {HTMLInputElement} */(e.target).value))} />

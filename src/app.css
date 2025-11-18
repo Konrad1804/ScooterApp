@@ -1,11 +1,18 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --color-bg: #e9f5f6;
+  --color-panel: #ffffff;
+  --color-primary: #34a6b2; /* teal */
+  --color-accent: #0f6f8f; /* deeper teal */
+  --color-text: #e95814;
+  --color-muted: #6b7b88;
+
+  color-scheme: light;
+  color: var(--color-text);
+  background-color: var(--color-bg);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -14,20 +21,20 @@
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: var(--color-primary);
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-image: radial-gradient(circle at 10% 10%, rgba(52,166,178,0.06), transparent 15%), linear-gradient(180deg, rgba(15,111,143,0.03), transparent 40%);
+  color: var(--color-text);
 }
 
 h1 {
@@ -36,33 +43,108 @@ h1 {
 }
 
 .card {
-  padding: 2em;
+  background: var(--color-panel);
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(33,53,71,0.06);
+  color: var(--color-text);
 }
 
 #app {
-  max-width: 1280px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  padding: 2rem 1.25rem;
+}
+
+.site-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(52,166,178,0.06), rgba(15,111,143,0.03));
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.brand img {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: white;
+  padding: 4px;
+  box-shadow: 0 4px 10px rgba(33,53,71,0.06);
+}
+.brand .title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.brand .subtitle {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.nav {
+  display: flex;
+  gap: 0.5rem;
+}
+.nav a {
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  color: var(--color-accent);
+  background: transparent;
+  border: 1px solid transparent;
+  font-weight: 600;
+}
+.nav a:hover {
+  background: rgba(15,111,143,0.06);
+  border-color: rgba(15,111,143,0.08);
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  border-radius: 10px;
+  border: none;
+  padding: 0.6em 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: var(--color-accent);
+  color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
-button:hover {
-  border-color: #646cff;
-}
+button:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(15,111,143,0.12);} 
 button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:focus-visible { outline: 4px auto -webkit-focus-ring-color; }
+
+/* Button utility classes (use these on elements for consistent theming) */
+.btn { display:inline-flex; align-items:center; gap:0.5rem; padding:0.55rem 0.9rem; border-radius:10px; font-weight:600; cursor:pointer; }
+.btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+.btn-primary { background: var(--color-accent); color: #fff; }
+.btn-success { background: #27ae60; color: #fff; }
+.btn-danger { background: #e74c3c; color: #fff; }
+.btn-outline { background: transparent; border: 1px solid rgba(33,53,71,0.06); color: var(--color-text); }
+.btn-sm { padding:0.35rem 0.6rem; font-size:0.85rem; }
+.btn + .btn { margin-left:0.5rem; }
+
+/* Utility */
+.row { display:flex; gap:1rem; align-items:center; }
+.muted { color: var(--color-muted); }
+
+@media (max-width: 720px) {
+  .site-header { flex-direction: column; align-items:flex-start; }
+  .brand .title { font-size: 1rem; }
 }
 
 @media (prefers-color-scheme: light) {

@@ -32,6 +32,10 @@ export function updateBattery(scooterId, batteryPercent) {
   );
 }
 
+export function removeScooter(scooterId) {
+  scooters.update(list => list.filter(s => s.id !== scooterId));
+}
+
 export function isAvailable(s) {
   return s.status === 'available' && s.batteryPercent > 10;
 }
